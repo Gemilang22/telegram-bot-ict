@@ -107,7 +107,7 @@ async def download_ea(callback: CallbackQuery):
         "🕒 Timeframe: M1–M15 (Scalping)\n"
         "💾 Siap digunakan di MetaTrader 5\n\n"
         "⬇️ Klik link di bawah ini untuk mengunduh file EA:\n"
-        "<a href='https://github.com/Gmilang22/telegram-bot-ict/raw/main/EA_ICT_SNR_By Nobita_v2.mq5'>📥 Download EA</a>\n\n"
+        "<a href='https://github.com/Gemilang22/telegram-bot-ict/blob/37c8b4956e0b421c399c7fc0ee7e55783b96c2dc/EA_ICT_SNR_By%20Nobita_v2.mq5'>📥 Download EA</a>\n\n"
         "📘 Ketik /help untuk panduan instalasi.",
         reply_markup=back_menu(),
         parse_mode=ParseMode.HTML
