@@ -49,12 +49,12 @@ async def menu_handler(message: Message):
     ])
 
     await message.answer(
-        "<b>📋 MENU UTAMA</b>\n\n"
+        "<b>📋 MENU UTAMA EA BOT BY NOBITA</b>\n\n"
         "Silakan pilih salah satu menu berikut untuk informasi lengkap 👇",
         reply_markup=keyboard
     )
 
-# ✅ Callback: Panduan Install EA
+# ✅ Callback: Panduan Install EA BOT BY NOBITA
 @dp.callback_query(lambda c: c.data == "install_guide")
 async def install_guide_callback(callback: CallbackQuery):
     await callback.message.edit_text(
