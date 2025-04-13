@@ -4,7 +4,7 @@ from aiogram.enums import ParseMode
 from aiogram.types import Message
 from aiogram.client.default import DefaultBotProperties
 
-API_TOKEN = "ISI_TOKEN_BOT_KAMU"
+API_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"
 
 # Inisialisasi bot
 bot = Bot(token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
