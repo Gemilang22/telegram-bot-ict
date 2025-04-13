@@ -1,5 +1,21 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.enums import ParseMode
+from aiogram.fsm.strategy import FSMStrategy
+from aiogram.types import Message
+from aiogram.filters import Command
+from aiogram import Router
+from aiogram.client.default import DefaultBotProperties
+
+# ✅ Ganti ini dengan token asli bot kamu dari @BotFather
+API_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0E"
+
+# ✅ Inisialisasi Bot dan Dispatcher
+bot = Bot(token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+dp = Dispatcher()
+
+# --- Masukkan semua command handler kamu di bawah ini ---
+# (misalnya handler /start, /menu, callback, dll)
 
 # /menu handler
 @dp.message(Command("menu"))
