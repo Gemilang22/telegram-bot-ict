@@ -45,7 +45,7 @@ async def menu_handler(message: Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="📘 Panduan Pasang EA", callback_data="install_guide")],
         [InlineKeyboardButton(text="🧠 Tentang Strategi ICT", callback_data="ict_strategy")],
-        [InlineKeyboardButton(text="📞 Kontak Admin", url="https://t.me/NOBITA_291200")]
+        [InlineKeyboardButton(text="📞 Kontak Admin", url="https://t.me/nobita_fx")]
     ])
 
     await message.answer(
