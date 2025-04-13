@@ -60,10 +60,11 @@ async def help_handler(message: Message):
 # 📋 MENU
 @dp.message(Command("menu"))
 async def menu_handler(message: Message):
-    await message.answer("<b>📋 MENU UTAMA</b>\n 👋 Selamat datang di EA ICT by Nobita\n "Bot ini akan membantu kamu:\n"
-        "• 📘 Memasang EA di MT5\n"
-        "• 🧠 Mengenal strategi ICT\n"
-        "• 🔔 Menerima sinyal dan notifikasi\n Silakan pilih menu di bawah ini 👇", reply_markup=main_menu())
+    await message.answer("<b>📋 MENU UTAMA</b>\n 👋 Selamat datang di EA ICT by Nobita "Bot ini akan membantu kamu:\n"
+        "• 📘 Memasang EA di MT5
+        "• 🧠 Mengenal strategi ICT
+        "• 🔔 Menerima sinyal dan notifikasi
+        Silakan pilih menu di bawah ini 👇", reply_markup=main_menu())
 
 # ⬅️ Kembali ke Menu
 @dp.callback_query(lambda c: c.data == "back_to_menu")
