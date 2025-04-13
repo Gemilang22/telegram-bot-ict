@@ -16,9 +16,12 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def start_handler(message: Message):
     await message.answer(
-        "<b>👋 Selamat datang di EA ICT Scalping Bot!</b>\n\n"
-        "Bot ini membantu Anda memahami dan menggunakan EA strategi ICT dengan lebih mudah.\n\n"
-        "Ketik <b>/menu</b> untuk melihat fitur dan panduan lengkap.",
+        "<b>👋 Selamat datang di EA ICT by Nobita</b>\n\n"
+        "Bot ini akan membantu kamu:\n"
+        "• 📘 Memasang EA di MT5\n"
+        "• 🧠 Mengenal strategi ICT\n"
+        "• 🔔 Menerima sinyal dan notifikasi\n\n"
+        "Gunakan perintah /menu untuk mulai ▶️",
     )
 
 # ✅ Command /help
