@@ -197,10 +197,5 @@ async def cancel_transaction(callback: CallbackQuery, state: FSMContext):
 def cancel_button():
     return InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="❌ Batalkan", callback_data="cancel_tx")]])
 
-# ▶️ Jalankan Bot
-async def main():
-    print("🤖 Bot aktif...")
-    await dp.start_polling(bot)
-
 if __name__ == "__main__":
     asyncio.run(main())
