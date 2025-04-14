@@ -1,17 +1,12 @@
-# main.py
-
 import asyncio
-import os
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
-from dotenv import load_dotenv
 from handlers import register_handlers
 
-load_dotenv()
-
-API_TOKEN = os.getenv("API_TOKEN")  # Token diatur di file .env
+# GANTI DENGAN TOKEN BOT KAMU LANGSUNG DI SINI
+API_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"  # contoh
 
 # Setup Bot & Dispatcher
 bot = Bot(token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
