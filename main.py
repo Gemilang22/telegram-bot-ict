@@ -1,10 +1,10 @@
 import logging
 from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ParseMode  # Perubahan di sini
-from aiogram.utils import executor
+from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
+from aiogram import Router
+from aiogram import Client
 from handlers import register_handlers
 
 # ======= Konfigurasi Logging =======
@@ -30,6 +30,6 @@ async def on_shutdown(dp):
     await dp.storage.wait_closed()
 
 if __name__ == '__main__':
-    # Menjalankan bot
+    # Menjalankan polling dengan cara baru di aiogram 3.x
     from aiogram import executor
-    executor.start_polling(dp, skip_updates=True, on_start=on_start, on_shutdown=on_shutdown)
+    await dp.start_polling()
