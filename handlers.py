@@ -179,7 +179,7 @@ async def receive_proof(message: Message, state: FSMContext, bot: Bot):
 
     try:
         await bot.send_photo(
-            chat_id=8081196747,  # <- tanpa tanda kutip, integer
+            chat_id=8081196747,
             photo=file_id,
             caption=(
                 f"📥 Pembelian EA Baru:\n\n"
@@ -190,12 +190,13 @@ async def receive_proof(message: Message, state: FSMContext, bot: Bot):
                 f"📝 Catatan: {data['notes']}"
             )
         )
+    except Exception as e:
+        print(f"❌ Gagal kirim foto: {e}")
 
+    # Ini HARUS berada di dalam fungsi async
     await message.answer("✅ Bukti pembayaran diterima. Admin akan menghubungi kamu segera. Terima kasih!")
-except Exception as e:
-    await message.answer(f"❌ Gagal mengirim bukti ke admin: {e}")
-finally:
-    await state.clear()
+
+    await state.clear()  # untuk mengakhiri form
 
     @dp.callback_query(lambda c: c.data == "cancel_tx")
     async def cancel_transaction(callback: CallbackQuery, state: FSMContext):
