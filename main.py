@@ -1,24 +1,31 @@
-import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
-from handle import router  # Router kamu dari file handle.py
+from aiogram.enums import ParseMode
+from aiogram.webhook.aiohttp_server import setup_application
+from aiohttp import web
+import asyncio
+import os
 
-# Ganti dengan token bot kamu
+from handle import router  # Router kamu
+
 BOT_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"
+WEBHOOK_URL = "https://worker-production-e8f2.up.railway.app"  # ganti domainnya
+
+async def on_startup(bot: Bot):
+    await bot.set_webhook(WEBHOOK_URL)
 
 async def main():
-    bot = Bot(
-        token=BOT_TOKEN,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-    )
-    
+    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=MemoryStorage())
-    dp.include_router(router)  # Pastikan router sudah di-import dari handle.py
+    dp.include_router(router)
 
-    print("🤖 Bot berhasil dijalankan...")
-    await dp.start_polling(bot)
+    app = web.Application()
+    app["bot"] = bot
+    dp.startup.register(on_startup)
+    await setup_application(app, dp, bot=bot)
+
+    return app
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    web.run_app(main(), port=int(os.environ.get("PORT", 8000)))
