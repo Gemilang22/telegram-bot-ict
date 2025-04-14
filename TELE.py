@@ -115,7 +115,7 @@ async def download_ea(callback: CallbackQuery):
     await callback.answer()
 
 
-# 🔄 Jalankan Bot EA ICT by Nobita
+# 🔄 Jalankan Bot EA ICT by Nobita v
 async def main():
     print("🤖 Bot aktif dan siap melayani...")
     await dp.start_polling(bot)
