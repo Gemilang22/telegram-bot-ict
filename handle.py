@@ -1,12 +1,9 @@
-from aiogram import types, F, Bot
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram import Router, F, Bot
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.filters import Command
-from aiogram.dispatcher.router import Router
 import logging
-from aiogram import Router
-from aiogram.types import Message
 
 router = Router()
 
