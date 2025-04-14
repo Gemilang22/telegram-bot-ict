@@ -1,10 +1,13 @@
-from aiogram import types, F
+from aiogram import types, F, Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram import Bot
 from aiogram.filters import Command
 from aiogram.dispatcher.router import Router
+import logging
+
+# ======= Setup Logging =======
+logger = logging.getLogger(__name__)
 
 # ======= FSM STATES =======
 class PurchaseForm(StatesGroup):
@@ -53,12 +56,12 @@ def register_handlers(router: Router):
     async def menu_handler(message: types.Message):
         await message.answer("<b>📋 MENU UTAMA</b>\nSilakan pilih menu di bawah ini 👇", reply_markup=main_menu())
 
-    @router.callback_query(lambda c: c.data == "back_to_menu")
+    @router.callback_query(F.data == "back_to_menu")
     async def back_to_menu(callback: CallbackQuery):
         await callback.message.edit_text("<b>📋 MENU UTAMA</b>\nSilakan pilih menu di bawah ini 👇", reply_markup=main_menu())
         await callback.answer()
 
-    @router.callback_query(lambda c: c.data == "install_guide")
+    @router.callback_query(F.data == "install_guide")
     async def install_guide(callback: CallbackQuery):
         await callback.message.edit_text(
             "<b>📘 Cara Install EA di MetaTrader 5 (PC)</b>\n\n"
@@ -69,7 +72,7 @@ def register_handlers(router: Router):
         )
         await callback.answer()
 
-    @router.callback_query(lambda c: c.data == "ict_strategy")
+    @router.callback_query(F.data == "ict_strategy")
     async def ict_strategy(callback: CallbackQuery):
         await callback.message.edit_text(
             "<b>🧠 Apa Itu Strategi ICT?</b>\n\n"
@@ -81,7 +84,7 @@ def register_handlers(router: Router):
         )
         await callback.answer()
 
-    @router.callback_query(lambda c: c.data == "info_ea")
+    @router.callback_query(F.data == "info_ea")
     async def info_ea(callback: CallbackQuery, state: FSMContext):
         markup = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="🛒 Beli EA Ini", callback_data="buy_ea")],
@@ -100,7 +103,7 @@ def register_handlers(router: Router):
         )
         await callback.answer()
 
-    @router.callback_query(lambda c: c.data == "buy_ea")
+    @router.callback_query(F.data == "buy_ea")
     async def choose_version(callback: CallbackQuery, state: FSMContext):
         markup = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="Versi 1", callback_data="v1"),
@@ -111,7 +114,7 @@ def register_handlers(router: Router):
         await callback.message.edit_text("Pilih versi EA yang ingin kamu beli:", reply_markup=markup)
         await state.set_state(PurchaseForm.choosing_version)
 
-    @router.callback_query(lambda c: c.data in ["v1", "v2", "v3"])
+    @router.callback_query(F.data.in_(["v1", "v2", "v3"]))
     async def save_version(callback: CallbackQuery, state: FSMContext):
         await state.update_data(version=callback.data)
         await callback.message.answer("Masukkan nama lengkap kamu:", reply_markup=cancel_button())
@@ -119,13 +122,16 @@ def register_handlers(router: Router):
 
     @router.message(PurchaseForm.filling_name)
     async def fill_name(message: types.Message, state: FSMContext):
-        await state.update_data(name=message.text)
+        if len(message.text) < 3:
+            await message.answer("Nama terlalu pendek. Silakan masukkan nama lengkap yang benar:")
+            return
+        await state.update_data(name=message.text.strip())
         await message.answer("Masukkan nomor WhatsApp atau Telegram kamu:", reply_markup=cancel_button())
         await state.set_state(PurchaseForm.filling_contact)
 
     @router.message(PurchaseForm.filling_contact)
     async def fill_contact(message: types.Message, state: FSMContext):
-        await state.update_data(contact=message.text)
+        await state.update_data(contact=message.text.strip())
         markup = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="BANK BCA", callback_data="pay_bank"),
              InlineKeyboardButton(text="DANA", callback_data="pay_dana")],
@@ -137,7 +143,7 @@ def register_handlers(router: Router):
         await message.answer("Pilih metode pembayaran:", reply_markup=markup)
         await state.set_state(PurchaseForm.choosing_payment)
 
-    @router.callback_query(lambda c: c.data.startswith("pay_"))
+    @router.callback_query(F.data.startswith("pay_"))
     async def save_payment(callback: CallbackQuery, state: FSMContext):
         method = callback.data.replace("pay_", "")
         await state.update_data(payment_method=method)
@@ -159,20 +165,17 @@ def register_handlers(router: Router):
 
     @router.message(PurchaseForm.adding_notes)
     async def fill_notes(message: types.Message, state: FSMContext):
-        await state.update_data(notes=message.text)
+        await state.update_data(notes=message.text.strip())
         await message.answer("Silakan kirim bukti pembayaran (gambar):", reply_markup=cancel_button())
         await state.set_state(PurchaseForm.uploading_proof)
 
     @router.message(PurchaseForm.uploading_proof, F.photo)
     async def receive_proof(message: types.Message, state: FSMContext, bot: Bot):
-        photo = message.photo[-1]
-        file_id = photo.file_id
-        data = await state.get_data()
-
-        print(f"DEBUG: file_id: {file_id}")
-        print(f"DEBUG: data: {data}")
-
         try:
+            photo = message.photo[-1]
+            file_id = photo.file_id
+            data = await state.get_data()
+
             await bot.send_photo(
                 chat_id=8081196747,
                 photo=file_id,
@@ -183,19 +186,16 @@ def register_handlers(router: Router):
                          f"Pembayaran via: {data['payment_method']}\n"
                          f"Keterangan: {data.get('notes', '-')}")
             )
-            await message.answer("Terima kasih! Bukti pembayaran diterima. Admin akan segera memproses pesanan Anda.")
+            await message.answer("✅ Bukti pembayaran diterima. Admin akan segera memproses pesanan Anda.")
             await state.clear()
 
         except Exception as e:
-            await message.answer(f"Terjadi kesalahan: {str(e)}")
+            logger.error(f"Error saat mengirim bukti pembayaran: {e}")
+            await message.answer(f"⚠️ Terjadi kesalahan saat memproses bukti pembayaran. Silakan coba lagi.")
 
-    @router.callback_query(lambda c: c.data == "cancel_tx")
+    @router.callback_query(F.data == "cancel_tx")
     async def cancel_transaction(callback: CallbackQuery, state: FSMContext):
         await state.clear()
         await callback.answer("Transaksi dibatalkan.", show_alert=True)
-        await callback.message.edit_text("Pembelian dibatalkan. Untuk memulai ulang, ketik /menu")
-        await callback.answer()
+        await callback.message.edit_text("🚫 Pembelian dibatalkan.\nUntuk memulai ulang, ketik /menu")
 
-# Example of how to register the handler
-router = Router()
-register_handlers(router)
