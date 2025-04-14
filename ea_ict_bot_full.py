@@ -28,7 +28,6 @@ class PurchaseForm(StatesGroup):
     uploading_proof = State()
 
 # 🧾 MENU UTAMA
-
 def main_menu():
     return InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="🛒 Info EA & Beli EA", callback_data="info_ea")],
@@ -99,11 +98,11 @@ async def info_ea(callback: CallbackQuery, state: FSMContext):
     ])
     await callback.message.edit_text(
         "<b>🛠 INFO PRODUK: EA ICT BY NOBITA</b>\n\n"
-        "<b>Versi 1:</b> EA_ICT_SNR_By Nobita_v1\n"
+        "<b>Versi 1:</b> EA_ICT_SNR_By Nobita_v1 - <b>Harga: Rp 300,000</b>\n"
         "• Risk Management\n• Lot 0.01–0.03\n• Check News + Auto Close\n• Full ICT: BOS + FVG + OB + Candle\n• Smart SL/TP + Breakeven + Trailing Stop\n\n"
-        "<b>Versi 2:</b> EA_ICT_SNR_By Nobita_v2\n"
+        "<b>Versi 2:</b> EA_ICT_SNR_By Nobita_v2 - <b>Harga: Rp 150,000</b>\n"
         "• Risk Management\n• Lot 0.01 fix\n• Strategi: Candle Pattern + SNR\n\n"
-        "<b>Versi 3:</b> EA_ICT_SNR_By Nobita_v3\n"
+        "<b>Versi 3:</b> EA_ICT_SNR_By Nobita_v3 - <b>Harga: Rp 100,000</b>\n"
         "• No Risk Management\n• Lot 0.01 fix\n• Strategi: SNR saja",
         reply_markup=markup
     )
@@ -138,7 +137,10 @@ async def fill_contact(message: Message, state: FSMContext):
     await state.update_data(contact=message.text)
     markup = InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="BANK BCA", callback_data="pay_bank"),
-         InlineKeyboardButton(text="DANA", callback_data="pay_dana")],
+         InlineKeyboardButton(text="DANA", callback_data="pay_dana"),
+         InlineKeyboardButton(text="Solana (SOL)", callback_data="pay_solana"),
+         InlineKeyboardButton(text="Bitcoin (BTC)", callback_data="pay_btc"),
+         InlineKeyboardButton(text="Ethereum (ETH)", callback_data="pay_eth")],
         [InlineKeyboardButton(text="❌ Batalkan", callback_data="cancel_tx")]
     ])
     await message.answer("Pilih metode pembayaran:", reply_markup=markup)
@@ -151,8 +153,12 @@ async def save_payment(callback: CallbackQuery, state: FSMContext):
 
     payment_text = {
         "bank": "BANK BCA\nNo: 5411303072\nA/N: ROHIM SOFIYAN",
-        "dana": "DANA: 085692697242 (a.n ROHIM SOFIYAN)"
+        "dana": "DANA: 085692697242 (a.n ROHIM SOFIYAN)",
+        "solana": "Solana Wallet: 5NVt5tKx46p5rpH5wFVFGoD4Vmua1gR7A3mbmfPSRVR8",
+        "btc": "Bitcoin Wallet: 1A2b3C4D5e6F7G8H9J0kL",
+        "eth": "Ethereum Wallet: 0x5F3AB5b742Fd8d2744DBeC0fEc2Bb8A9F6F2e9C1"
     }
+
     await callback.message.answer(f"Detail Pembayaran:\n<pre>{payment_text[method]}</pre>\n\nTulis keterangan tambahan (jika ada), atau ketik - jika tidak ada:", parse_mode="HTML", reply_markup=cancel_button())
     await state.set_state(PurchaseForm.adding_notes)
 
@@ -162,7 +168,7 @@ async def fill_notes(message: Message, state: FSMContext):
     await message.answer("Silakan kirim bukti pembayaran (gambar):", reply_markup=cancel_button())
     await state.set_state(PurchaseForm.uploading_proof)
 
-@dp.message(PurchaseForm.uploading_proof)
+@dp.message(PurchaseForm.uploading_proof, content_types=types.ContentType.PHOTO)
 async def receive_proof(message: Message, state: FSMContext):
     if not message.photo:
         await message.answer("❗ Kirim bukti dalam bentuk foto.")
