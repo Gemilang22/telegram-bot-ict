@@ -6,7 +6,7 @@ from aiogram.client.default import DefaultBotProperties
 from handle import router  # Router kamu dari file handle.py
 
 # Ganti dengan token bot kamu
-BOT_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"
+BOT_TOKEN = "7314074107:AAHRk9CiM1U0fuEgtlNxQDPk5ksKgfHFf2g"
 
 async def main():
     bot = Bot(
