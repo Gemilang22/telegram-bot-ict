@@ -174,15 +174,27 @@ def register_handlers(dp: Dispatcher):
         file_id = photo.file_id
         data = await state.get_data()
 
-        await bot.send_photo(
-            chat_id="@NOBITA_291200",
-            photo=file_id,
-            caption=f"📥 Pembelian EA Baru:\n\n"
-                    f"👤 Nama: {data['name']}\n☎️ Kontak: {data['contact']}\n"
-                    f"💼 Versi: {data['version']}\n💰 Metode: {data['payment_method']}\n📝 Catatan: {data['notes']}"
+        print(f"DEBUG: file_id: {file_id}")
+print(f"DEBUG: data: {data}")
+
+try:
+    await bot.send_photo(
+        chat_id=-1002545051123,  # <- tanpa tanda kutip, integer
+        photo=file_id,
+        caption=(
+            f"📥 Pembelian EA Baru:\n\n"
+            f"👤 Nama: {data['name']}\n"
+            f"☎️ Kontak: {data['contact']}\n"
+            f"💼 Versi: {data['version']}\n"
+            f"💰 Metode: {data['payment_method']}\n"
+            f"📝 Catatan: {data['notes']}"
         )
-        await message.answer("✅ Bukti pembayaran diterima. Admin akan menghubungi kamu segera. Terima kasih!")
-        await state.clear()
+    )
+    await message.answer("✅ Bukti pembayaran diterima. Admin akan menghubungi kamu segera. Terima kasih!")
+except Exception as e:
+    await message.answer(f"❌ Gagal mengirim bukti ke admin: {e}")
+finally:
+    await state.clear()
 
     @dp.callback_query(lambda c: c.data == "cancel_tx")
     async def cancel_transaction(callback: CallbackQuery, state: FSMContext):
