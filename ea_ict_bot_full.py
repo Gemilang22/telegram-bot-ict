@@ -196,6 +196,30 @@ async def cancel_transaction(callback: CallbackQuery, state: FSMContext):
 
 def cancel_button():
     return InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="❌ Batalkan", callback_data="cancel_tx")]])
+# ▶️ Jalankan Bot
+async def main():
+    print("🤖 Bot aktif...")
+    await dp.start_polling(bot)
+# main.py
+
+import asyncio
+from aiogram import Bot, Dispatcher
+import os
+
+API_TOKEN = os.getenv("API_TOKEN")
+
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher()
+
+async def main():
+    await dp.start_polling(bot)
+
+# Bagian ini di bawah ya
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     asyncio.run(main())
