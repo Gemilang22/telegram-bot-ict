@@ -25,5 +25,12 @@ async def main():
     print("🤖 Bot aktif...")
     await dp.start_polling(bot)
 
+def main():
+    print("Bot is starting...")
+    app = ApplicationBuilder().token(TOKEN).build()
+    setup_handlers(app)
+    print("Bot is running on Railway...")
+    app.run_polling()
+
 if __name__ == "__main__":
     asyncio.run(main())
