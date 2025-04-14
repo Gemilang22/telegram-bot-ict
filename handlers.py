@@ -168,28 +168,29 @@ def register_handlers(dp: Dispatcher):
         await message.answer("Silakan kirim bukti pembayaran (gambar):", reply_markup=cancel_button())
         await state.set_state(PurchaseForm.uploading_proof)
 
-    @dp.message(PurchaseForm.uploading_proof, F.photo)
-    async def receive_proof(message: Message, state: FSMContext, bot: Bot):
-        photo = message.photo[-1]
-        file_id = photo.file_id
-        data = await state.get_data()
+@dp.message(PurchaseForm.uploading_proof, F.photo)
+async def receive_proof(message: Message, state: FSMContext, bot: Bot):
+    photo = message.photo[-1]
+    file_id = photo.file_id
+    data = await state.get_data()
 
-        print(f"DEBUG: file_id: {file_id}")
-print(f"DEBUG: data: {data}")
+    print(f"DEBUG: file_id: {file_id}")
+    print(f"DEBUG: data: {data}")
 
-try:
-    await bot.send_photo(
-        chat_id=-1002545051123,  # <- tanpa tanda kutip, integer
-        photo=file_id,
-        caption=(
-            f"📥 Pembelian EA Baru:\n\n"
-            f"👤 Nama: {data['name']}\n"
-            f"☎️ Kontak: {data['contact']}\n"
-            f"💼 Versi: {data['version']}\n"
-            f"💰 Metode: {data['payment_method']}\n"
-            f"📝 Catatan: {data['notes']}"
+    try:
+        await bot.send_photo(
+            chat_id=8081196747,  # <- tanpa tanda kutip, integer
+            photo=file_id,
+            caption=(
+                f"📥 Pembelian EA Baru:\n\n"
+                f"👤 Nama: {data['name']}\n"
+                f"☎️ Kontak: {data['contact']}\n"
+                f"💼 Versi: {data['version']}\n"
+                f"💰 Metode: {data['payment_method']}\n"
+                f"📝 Catatan: {data['notes']}"
+            )
         )
-    )
+
     await message.answer("✅ Bukti pembayaran diterima. Admin akan menghubungi kamu segera. Terima kasih!")
 except Exception as e:
     await message.answer(f"❌ Gagal mengirim bukti ke admin: {e}")
