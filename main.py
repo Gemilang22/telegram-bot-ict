@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Router
 
-API_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"
+API_TOKEN = "7314074107:AAHRk9CiM1U0fuEgtlNxQDPk5ksKgfHFf2g"
 
 router = Router()
 
