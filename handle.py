@@ -5,6 +5,10 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.filters import Command
 from aiogram.dispatcher.router import Router
 import logging
+from aiogram import Router
+from aiogram.types import Message
+
+router = Router()
 
 # ======= Setup Logging =======
 logger = logging.getLogger(__name__)
