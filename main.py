@@ -8,7 +8,7 @@ from aiogram.client.default import DefaultBotProperties
 from handle import router  # ⬅️ INI WAJIB
 
 async def main():
-    bot = Bot(token="7314074107:AAHRk9CiM1U0fuEgtlNxQDPk5ksKgfHFf2g", default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(token="7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0", default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=MemoryStorage())
 
     dp.include_router(router)  # ⬅️ PASTIKAN INI ADA
