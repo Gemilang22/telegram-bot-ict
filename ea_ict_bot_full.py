@@ -30,16 +30,15 @@ class PurchaseForm(StatesGroup):
 # 🧾 MENU UTAMA
 
 def main_menu():
-    return InlineKeyboardMarkup(inline_keyboard=[
+    return InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="🛒 Info EA & Beli EA", callback_data="info_ea")],
         [InlineKeyboardButton(text="📘 Panduan Pasang EA", callback_data="install_guide")],
         [InlineKeyboardButton(text="🧠 Tentang Strategi ICT", callback_data="ict_strategy")],
-        [InlineKeyboardButton(text="📦 Download EA", callback_data="download_ea")],
         [InlineKeyboardButton(text="📞 Kontak Admin", url="https://t.me/NOBITA_291200")],
     ])
 
 def back_menu():
-    return InlineKeyboardMarkup(inline_keyboard=[
+    return InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="⬅️ Kembali ke Menu", callback_data="back_to_menu")]
     ])
 
@@ -91,22 +90,10 @@ async def ict_strategy(callback: CallbackQuery):
     )
     await callback.answer()
 
-# 📦 Download EA
-@dp.callback_query(lambda c: c.data == "download_ea")
-async def download_ea(callback: CallbackQuery):
-    await callback.message.edit_text(
-        "<b>📦 EA ICT Scalping by Nobita</b>\n\n"
-        "🧠 Strategi: BOS, OB, FVG\n🕒 Timeframe: M1–M15 (Scalping)\n💾 Siap digunakan di MetaTrader 5\n\n"
-        "⬇️ Klik link di bawah ini untuk mengunduh file EA:\n"
-        "<a href='https://github.com/Gemilang22/telegram-bot-ict/blob/main/EA_ICT_SNR_By%20Nobita_v2.mq5'>📥 Download EA</a>",
-        reply_markup=back_menu()
-    )
-    await callback.answer()
-
 # 🛒 Info EA
 @dp.callback_query(lambda c: c.data == "info_ea")
 async def info_ea(callback: CallbackQuery, state: FSMContext):
-    markup = InlineKeyboardMarkup(inline_keyboard=[
+    markup = InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="🛒 Beli EA Ini", callback_data="buy_ea")],
         [InlineKeyboardButton(text="⬅️ Kembali ke Menu", callback_data="back_to_menu")]
     ])
@@ -125,7 +112,7 @@ async def info_ea(callback: CallbackQuery, state: FSMContext):
 # ➡️ Step Beli EA
 @dp.callback_query(lambda c: c.data == "buy_ea")
 async def choose_version(callback: CallbackQuery, state: FSMContext):
-    markup = InlineKeyboardMarkup(inline_keyboard=[
+    markup = InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="Versi 1", callback_data="v1"),
          InlineKeyboardButton(text="Versi 2", callback_data="v2"),
          InlineKeyboardButton(text="Versi 3", callback_data="v3")],
@@ -149,11 +136,9 @@ async def fill_name(message: Message, state: FSMContext):
 @dp.message(PurchaseForm.filling_contact)
 async def fill_contact(message: Message, state: FSMContext):
     await state.update_data(contact=message.text)
-    markup = InlineKeyboardMarkup(inline_keyboard=[
+    markup = InlineKeyboardMarkup(inline_keyboard=[  
         [InlineKeyboardButton(text="BANK BCA", callback_data="pay_bank"),
          InlineKeyboardButton(text="DANA", callback_data="pay_dana")],
-        [InlineKeyboardButton(text="QRIS", callback_data="pay_qris"),
-         InlineKeyboardButton(text="CRYPTO", callback_data="pay_crypto")],
         [InlineKeyboardButton(text="❌ Batalkan", callback_data="cancel_tx")]
     ])
     await message.answer("Pilih metode pembayaran:", reply_markup=markup)
@@ -166,9 +151,7 @@ async def save_payment(callback: CallbackQuery, state: FSMContext):
 
     payment_text = {
         "bank": "BANK BCA\nNo: 5411303072\nA/N: ROHIM SOFIYAN",
-        "dana": "DANA: 0858-7736-0550 (a.n ROHIM SOFIYAN)",
-        "qris": "Silakan scan QRIS berikut untuk pembayaran.",
-        "crypto": "SOLANA: HmbBk8fhbu8qPExu...\nBTC: bc1qw68622xht...\nETH: 0x146C8b209615..."
+        "dana": "DANA: 085692697242 (a.n ROHIM SOFIYAN)"
     }
     await callback.message.answer(f"Detail Pembayaran:\n<pre>{payment_text[method]}</pre>\n\nTulis keterangan tambahan (jika ada), atau ketik - jika tidak ada:", parse_mode="HTML", reply_markup=cancel_button())
     await state.set_state(PurchaseForm.adding_notes)
