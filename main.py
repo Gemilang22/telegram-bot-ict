@@ -10,7 +10,7 @@ import os
 from handle import router  # Router kamu
 
 BOT_TOKEN = "7830689776:AAFJabHa7QdnuKfz0b97N8x5TGsl9RPPBX0"
-WEBHOOK_URL = "https://worker-production-e8f2.up.railway.app"  # ganti domainnya
+WEBHOOK_URL = "https://3b9b7b70-5a04-4a49-aed2-672bb9746dfb-00-14gue8bn4vxxr.pike.replit.dev"  # ganti domainnya
 
 async def on_startup(bot: Bot):
     await bot.set_webhook(WEBHOOK_URL)
