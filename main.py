@@ -23,7 +23,8 @@ async def main():
     app = web.Application()
     app["bot"] = bot
     dp.startup.register(on_startup)
-    await setup_application(app, dp, bot=bot)
+    setup_application(app, dp, bot=bot)
+
 
     return app
 
